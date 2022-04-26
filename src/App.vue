@@ -5,22 +5,33 @@
             <form @submit.prevent="addTodo()" class="row m-3">
                   <input v-model="newTodo" class="col-9 rounded p-3" type="text" />
                   <div class="col-3 d-flex justify-content-end p-0">
-                        <button class="btn rounded btn-info text-white">Add new todo</button>
+                        <button class="btn fw-bold rounded btn-info text-white">
+                              Add new todo
+                        </button>
                   </div>
             </form>
             <h3 class="d-flex m-3 pt-3">Task list :</h3>
             <ul>
-                  <li v-for="(todo, index) in todos" :key="index">
-                        <!-- <span> {{ index }} </span> -->
-                        <input type="checkbox" :name="todo" />
+                  <li
+                        v-for="(todo, index) in todos"
+                        :key="index"
+                        class="my-2 d-flex justify-content-start align-items-center"
+                  >
                         <label
                               @click="completedTodo(todo)"
                               :class="{ completed: todo.completed }"
-                              :for="todo"
+                              :for="todo.id"
+                              class="fw-bold fs-5"
                         >
+                              <input
+                                    type="checkbox"
+                                    :checked="todo.completed"
+                                    :name="todo.id"
+                                    class="me-3"
+                              />
                               {{ todo.content }}
                         </label>
-                        <button @click="removeTodo(todo)">Remove task</button>
+                        <button @click="removeTodo(todo)" class="ms-3">Remove task</button>
                   </li>
             </ul>
             <h4 v-if="todos.length === 0">Empty List</h4>
@@ -98,17 +109,30 @@ export default {
       margin: 60px auto 0 auto;
       width: 50%;
 }
-/* form {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      align-content: space-around;
-      justify-content: center;
-      align-items: center;
-} */
 ul li {
       list-style-type: none !important;
 }
+input[type="checkbox"] {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      transition: box-shadow 0.3s;
+      background: lightgrey;
+      cursor: pointer;
+      border: 0;
+      appearance: none;
+      -webkit-appearance: none;
+}
+
+input[type="checkbox"]:checked {
+      box-shadow: inset 0 0 0 20px blue;
+}
+label {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+}
+
 .completed {
       text-decoration: line-through !important;
 }
