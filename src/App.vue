@@ -51,6 +51,9 @@
                                           />
                                     </svg>
                               </button>
+                              <button @click="editTodo(todo.id)" class="btn ms-3 text-danger">
+                                    <span>Edit</span>
+                              </button>
                         </div>
                   </li>
             </ul>
@@ -95,15 +98,30 @@ export default {
 
             const removeTodo = (index) => {
                   todos.value.splice(index, 1);
+                  console.log(index);
                   saveData();
             };
+
+            const editTodo = (id) => {
+                  for (let i in todos.value) {
+                        if (todos.value[i].id == id) {
+                              todos.value[i].content = "Edited";
+                              break; //Stop this loop, we found it!
+                        }
+                  }
+                  console.log(todos.value);
+                  // https://stackoverflow.com/questions/4689856/how-to-change-value-of-object-which-is-inside-an-array-using-javascript-or-jquer
+            };
+
+            console.log(todos.value);
 
             return {
                   newTodo,
                   todos,
                   addTodo,
-                  removeTodo,
                   completedTodo,
+                  removeTodo,
+                  editTodo,
             };
       },
 };
