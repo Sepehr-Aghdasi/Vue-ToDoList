@@ -3,7 +3,12 @@
             <h1>ToDo List</h1>
             <label>Add new task</label>
             <form @submit.prevent="addTodo()" class="row m-3">
-                  <input v-model="newTodo" class="col-9 border rounded p-3" type="text" />
+                  <input
+                        v-model="newTodo"
+                        class="col-9 border rounded p-3"
+                        placeholder="Enter A Task"
+                        type="text"
+                  />
                   <div class="col-3 d-flex justify-content-end p-0">
                         <button class="btn fw-bold rounded btn-info text-white">
                               Add new todo
@@ -17,7 +22,7 @@
                         :key="index"
                         class="todo-item my-2 d-flex justify-content-between align-items-center"
                   >
-                        <div>
+                        <div class="d-flex">
                               <label
                                     @click="completedTodo(todo)"
                                     :class="{ completed: todo.completed }"
@@ -32,6 +37,17 @@
                                     />
                                     {{ todo.content }}
                               </label>
+                        </div>
+                        <div class="mx-3 d-flex align-item-center" v-if="todo.isEditing">
+                              <input
+                                    v-model="newTodo"
+                                    class="col-8 border rounded p-1"
+                                    placeholder="Edit Task"
+                                    type="text"
+                              />
+                              <button class="btn btn-danger" @click="todo.isEditing = false">
+                                    Submit
+                              </button>
                         </div>
                         <div>
                               <button @click="removeTodo(todo)" class="btn ms-3 text-danger">
@@ -51,7 +67,7 @@
                                           />
                                     </svg>
                               </button>
-                              <button @click="editTodo(todo.id)" class="btn ms-3 text-danger">
+                              <button @click="editTodo(todo, todo.id)" class="btn ms-3 text-danger">
                                     <span>Edit</span>
                               </button>
                         </div>
@@ -79,6 +95,7 @@ export default {
                               id: Date.now(),
                               content: newTodo.value,
                               completed: false,
+                              isEditing: false,
                         });
                         newTodo.value = "";
                   }
@@ -102,13 +119,18 @@ export default {
                   saveData();
             };
 
-            const editTodo = (id) => {
+            const editTodo = (todo, todoId) => {
+                  todo.isEditing = !todo.isEditing;
+                  console.log(todo);
+
                   for (let i in todos.value) {
-                        if (todos.value[i].id == id) {
-                              todos.value[i].content = "Edited";
+                        if (todos.value[i].id === todoId ) {
+                              todos.value[i].content = newTodo.value;
+
                               break; //Stop this loop, we found it!
                         }
                   }
+
                   console.log(todos.value);
                   // https://stackoverflow.com/questions/4689856/how-to-change-value-of-object-which-is-inside-an-array-using-javascript-or-jquer
             };
