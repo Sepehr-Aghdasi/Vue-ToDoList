@@ -1,9 +1,9 @@
 <template>
-      <div style="background-color: #4267b2" class="container w-100 p-3 rounded">
-            <h1 class="text-white">ToDo List</h1>
-            <label class="text-white">Add new task</label>
+      <div class="container w-100 p-3 rounded">
+            <h1>ToDo List</h1>
+            <label>Add new task</label>
             <form @submit.prevent="addTodo()" class="row m-3">
-                  <input v-model="newTodo" class="col-9 rounded p-3" type="text" />
+                  <input v-model="newTodo" class="col-9 border rounded p-3" type="text" />
                   <div class="col-3 d-flex justify-content-end p-0">
                         <button class="btn fw-bold rounded btn-info text-white">
                               Add new todo
@@ -15,42 +15,42 @@
                   <li
                         v-for="(todo, index) in todos"
                         :key="index"
-                        class="my-2 d-flex justify-content-start align-items-center"
+                        class="todo-item my-2 d-flex justify-content-between align-items-center"
                   >
-                  <div>
-                        <label
-                              @click="completedTodo(todo)"
-                              :class="{ completed: todo.completed }"
-                              :for="todo.id"
-                              class="fw-bold fs-5"
-                        >
-                              <input
-                                    type="checkbox"
-                                    :checked="todo.completed"
-                                    :name="todo.id"
-                                    class="me-3"
-                              />
-                              {{ todo.content }}
-                        </label>
+                        <div>
+                              <label
+                                    @click="completedTodo(todo)"
+                                    :class="{ completed: todo.completed }"
+                                    :for="todo.id"
+                                    class="fw-bold fs-5"
+                              >
+                                    <input
+                                          type="checkbox"
+                                          :checked="todo.completed"
+                                          :name="todo.id"
+                                          class="me-3"
+                                    />
+                                    {{ todo.content }}
+                              </label>
                         </div>
                         <div>
-                        <button @click="removeTodo(todo)" class="btn ms-3 text-danger">
-                              <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="26"
-                                    height="26"
-                                    fill="currentColor"
-                                    class="bi bi-x-circle"
-                                    viewBox="0 0 16 16"
-                              >
-                                    <path
-                                          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-                                    />
-                                    <path
-                                          d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
-                                    />
-                              </svg>
-                        </button>
+                              <button @click="removeTodo(todo)" class="btn ms-3 text-danger">
+                                    <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          width="26"
+                                          height="26"
+                                          fill="currentColor"
+                                          class="bi bi-x-circle"
+                                          viewBox="0 0 16 16"
+                                    >
+                                          <path
+                                                d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                                          />
+                                          <path
+                                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                                          />
+                                    </svg>
+                              </button>
                         </div>
                   </li>
             </ul>
@@ -129,6 +129,11 @@ export default {
       margin: 60px auto 0 auto;
       width: 50%;
 }
+ol,
+ul {
+      padding-left: 2rem !important;
+      padding-right: 2rem !important;
+}
 ul li {
       list-style-type: none !important;
 }
@@ -155,5 +160,10 @@ label {
 
 .completed {
       text-decoration: line-through !important;
+}
+.todo-item {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
 }
 </style>
