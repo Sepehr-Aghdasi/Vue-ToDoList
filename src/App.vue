@@ -40,17 +40,20 @@
                         </div>
                         <div class="mx-3 d-flex align-item-center" v-if="todo.isEditing">
                               <input
-                                    v-model="newTodo"
+                                    v-model="editTodoContent"
                                     class="col-8 border rounded p-1"
                                     placeholder="Edit Task"
                                     type="text"
                               />
-                              <button class="btn btn-danger" @click="todo.isEditing = false">
+                              <button class="btn btn-primary" @click="editTodo(todo)">
                                     Submit
+                              </button>
+                              <button class="btn btn-danger" @click="todo.isEditing = false">
+                                    cancel
                               </button>
                         </div>
                         <div>
-                              <button @click="removeTodo(todo)" class="btn ms-3 text-danger">
+                              <button @click="removeTodo(index)" class="btn ms-3 text-danger">
                                     <svg
                                           xmlns="http://www.w3.org/2000/svg"
                                           width="26"
@@ -67,7 +70,7 @@
                                           />
                                     </svg>
                               </button>
-                              <button @click="editTodo(todo, todo.id)" class="btn ms-3 text-danger">
+                              <button @click="showEditBox(todo)" class="btn ms-3 text-danger">
                                     <span>Edit</span>
                               </button>
                         </div>
@@ -88,6 +91,7 @@ export default {
             const newTodo = ref("");
             const todosData = JSON.parse(localStorage.getItem("todos")) || [];
             const todos = ref(todosData);
+            const editTodoContent = ref("");
 
             const addTodo = () => {
                   if (newTodo.value) {
@@ -119,30 +123,59 @@ export default {
                   saveData();
             };
 
-            const editTodo = (todo, todoId) => {
+            const showEditBox = (todo) => {
                   todo.isEditing = !todo.isEditing;
-                  console.log(todo);
-
-                  for (let i in todos.value) {
-                        if (todos.value[i].id === todoId ) {
-                              todos.value[i].content = newTodo.value;
-
-                              break; //Stop this loop, we found it!
-                        }
-                  }
-
-                  console.log(todos.value);
-                  // https://stackoverflow.com/questions/4689856/how-to-change-value-of-object-which-is-inside-an-array-using-javascript-or-jquer
+                  saveData();
             };
 
-            console.log(todos.value);
+            const editTodo = (todo) => {
+                  todos.value = todos.value.map((obj) => {
+                        if (obj.id === todo.id) {
+                              console.log(obj.id, todo.id, " task id are the same! TRUE");
+                              if (editTodoContent.value) {
+                                    todo.isEditing = false;
+                                    return { ...obj, content: editTodoContent.value };
+                              }
+                        }else{
+                              console.log("not same");
+                        }
+                        editTodoContent.value = "";
+                        return obj;
+                  });
+                  todo.isEditing = false;
+                  saveData();
+                  // https://stackoverflow.com/questions/4689856/how-to-change-value-of-object-which-is-inside-an-array-using-javascript-or-jquer
+
+                  // for (let i in todos.value) {
+                  //       if (todos.value[i].id === todoId) {
+                  //             if (editTodoContent.value) {
+                  //                   // todos.value[i].content = "";
+                  //                   // todos.value[i].content = editTodoContent.value;
+                  //                   // todos.value[i].isEditing = false;
+
+                  //                   todos.value[i].push({
+                  //                         id: Date.now(),
+                  //                         content: editTodoContent.value,
+                  //                         completed: false,
+                  //                         isEditing: false,
+                  //                   });
+                  //             }
+                  //             console.log(editTodoContent.value);
+                  //             editTodoContent.value = "";
+
+                  //             break; //Stop this loop, we found it!
+                  //       }
+                  // }
+            };
 
             return {
                   newTodo,
                   todos,
+                  editTodoContent,
                   addTodo,
                   completedTodo,
                   removeTodo,
+                  showEditBox,
                   editTodo,
             };
       },
