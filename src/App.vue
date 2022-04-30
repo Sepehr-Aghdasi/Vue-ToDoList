@@ -129,43 +129,19 @@ export default {
             };
 
             const editTodo = (todo) => {
-                  todos.value = todos.value.map((obj) => {
+                  for (const obj of todos.value) {
                         if (obj.id === todo.id) {
-                              console.log(obj.id, todo.id, " task id are the same! TRUE");
-                              if (editTodoContent.value) {
-                                    todo.isEditing = false;
-                                    return { ...obj, content: editTodoContent.value };
+                              if (!editTodoContent.value == "") {
+                                    obj.content = editTodoContent.value;
+
+                                    editTodoContent.value = "";
+                                    break;
                               }
-                        }else{
-                              console.log("not same");
                         }
-                        editTodoContent.value = "";
-                        return obj;
-                  });
+                  }
+                  // https://bobbyhadz.com/blog/javascript-update-property-of-object-in-array#:~:text=To%20update%20an%20object's%20property,return%20the%20object%20as%20is.
                   todo.isEditing = false;
                   saveData();
-                  // https://stackoverflow.com/questions/4689856/how-to-change-value-of-object-which-is-inside-an-array-using-javascript-or-jquer
-
-                  // for (let i in todos.value) {
-                  //       if (todos.value[i].id === todoId) {
-                  //             if (editTodoContent.value) {
-                  //                   // todos.value[i].content = "";
-                  //                   // todos.value[i].content = editTodoContent.value;
-                  //                   // todos.value[i].isEditing = false;
-
-                  //                   todos.value[i].push({
-                  //                         id: Date.now(),
-                  //                         content: editTodoContent.value,
-                  //                         completed: false,
-                  //                         isEditing: false,
-                  //                   });
-                  //             }
-                  //             console.log(editTodoContent.value);
-                  //             editTodoContent.value = "";
-
-                  //             break; //Stop this loop, we found it!
-                  //       }
-                  // }
             };
 
             return {
